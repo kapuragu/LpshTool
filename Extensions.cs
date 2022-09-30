@@ -41,11 +41,11 @@ namespace LpshTool
         public static string ReadCString(this BinaryReader reader)
         {
             var chars = new List<char>();
-            var @char = reader.ReadChar();
-            while (@char != '\0')
+            var @char = Convert.ToChar(reader.ReadByte());
+            while (@char != '\0' & @char != '"')
             {
                 chars.Add(@char);
-                @char = reader.ReadChar();
+                @char = Convert.ToChar(reader.ReadByte());
             }
 
             return new string(chars.ToArray());

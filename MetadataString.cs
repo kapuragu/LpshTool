@@ -13,12 +13,20 @@ namespace LpshTool
         public string String;
         public void Read(BinaryReader reader)
         {
+            var startOffset = reader.BaseStream.Position;
             Hash = reader.ReadUInt32();
             var offset = reader.ReadUInt32();
-            var continueOffset = reader.BaseStream.Position;
-            reader.BaseStream.Position = offset;
-            String = reader.ReadCString();
-            reader.BaseStream.Position = continueOffset;
+            if (offset!=0)
+            {
+                var continueOffset = reader.BaseStream.Position;
+                reader.BaseStream.Position = startOffset+offset;
+                String = reader.ReadCString();
+                reader.BaseStream.Position = continueOffset;
+            }
+            else
+            {
+                String = string.Empty;
+            }
         }
     }
 }

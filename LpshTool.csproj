@@ -54,6 +54,7 @@
     <Compile Include="LightProbeSHCoefficients.cs" />
     <Compile Include="LpshFile.cs" />
     <Compile Include="MetadataString.cs" />
+    <Compile Include="Probe.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShCoefficients.cs" />

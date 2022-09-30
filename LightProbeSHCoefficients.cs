@@ -9,18 +9,26 @@ namespace LpshTool
 {
     public class LightProbeSHCoefficients
     {
-        public List<uint> Times;
+        public List<uint> Times = new List<uint>();
+        public List<Probe> Probes = new List<Probe>();
         public void Read(BinaryReader reader, uint NumDiv, uint NumLightProbes)
         {
-            Times = new List<uint>();
-            for (int i = 0; i < NumDiv; i++)
+            Console.WriteLine($"NumDiv: {NumDiv}");
+            for (uint i = 0; i < NumDiv; i++)
             {
-                Times.Add(reader.ReadUInt32());
+                var time = reader.ReadUInt32();
+                Console.WriteLine($"time: {time}");
+                Times.Add(time);
             }
 
             reader.AlignStream(16);
 
-
+            for (uint i = 0; i < NumLightProbes; i++)
+            {
+                var probe = new Probe();
+                probe.Read(reader, NumDiv);
+                Probes.Add(probe);
+            }
         }
     }
 }

@@ -18,13 +18,20 @@ namespace LpshTool
     {
         public uint MetadataEntriesOffset;
         public uint FileSize;
-        public MetadataString Name;
+        public MetadataString Name = new MetadataString();
         public void Read(BinaryReader reader)
         {
-            GR_FILE_TYPE type = (GR_FILE_TYPE)reader.ReadUInt32();
-            MetadataEntriesOffset = reader.ReadUInt32();
-            FileSize = reader.ReadUInt32();
-            Name.Read(reader);
+            Console.WriteLine($"@{reader.BaseStream.Position} GrHeader:");
+            GR_FILE_TYPE type = (GR_FILE_TYPE)reader.ReadUInt32(); Console.WriteLine($"type={type}");
+            MetadataEntriesOffset = reader.ReadUInt32(); Console.WriteLine($"MetadataEntriesOffset={MetadataEntriesOffset}");
+            FileSize = reader.ReadUInt32(); Console.WriteLine($"FileSize={FileSize}");
+            
+            Name.Hash = reader.ReadUInt32(); var offset = reader.ReadUInt32();
+            var continueOffset = reader.BaseStream.Position;
+            reader.BaseStream.Position = offset; Name.String = reader.ReadCString();
+            reader.BaseStream.Position = continueOffset;
+            
+            Console.WriteLine($"Name={Name.Hash}|{Name.String}");
         }
     }
 }

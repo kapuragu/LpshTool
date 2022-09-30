@@ -24,7 +24,8 @@ namespace LpshTool
         {
             using (BinaryReader reader = new BinaryReader(new FileStream(path, FileMode.Open)))
             {
-
+                LpshFile lpsh = new LpshFile();
+                lpsh.Read(reader);
             }
         }
     }
