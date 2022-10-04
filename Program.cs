@@ -12,28 +12,24 @@ namespace LpshTool
         static void Main(string[] args)
         {
             bool isClone = false;
-            bool isCloneTimeSet = false;
-            int CloneTime = 0;
-            bool isCloneProbeIndexSet = false;
-            int CloneProbeIndex = 0;
+            int CloneTime = -1;
+            int CloneOrigIndex = -1;
             foreach (string arg in args)
             {
                 Console.WriteLine(arg);
 
                 if (isClone)
                 {
-                    if (!isCloneTimeSet)
+                    if (CloneTime<0)
                     {
                         int.TryParse(arg, out CloneTime);
                         Console.WriteLine($"Clone time: {CloneTime}");
-                        isCloneTimeSet = true;
                         continue;
                     }
-                    else if (!isCloneProbeIndexSet)
+                    else if (CloneOrigIndex<0)
                     {
-                        int.TryParse(arg, out CloneProbeIndex);
-                        Console.WriteLine($"Clone probe original index: {CloneProbeIndex}");
-                        isCloneProbeIndexSet = true;
+                        int.TryParse(arg, out CloneOrigIndex);
+                        Console.WriteLine($"Clone original index: {CloneOrigIndex}");
                         continue;
                     }
                 }
@@ -49,8 +45,8 @@ namespace LpshTool
                 {
                     string path = arg;
                     LpshFile lpsh = ReadFile(path);
-                    if (isClone& isCloneTimeSet& isCloneProbeIndexSet)
-                        lpsh.FixGuantanamo((uint)CloneTime, CloneProbeIndex);
+                    if (isClone& CloneTime>0)
+                        lpsh.FixGuantanamo((uint)CloneTime, CloneOrigIndex);
                     string newPath = Path.GetFileNameWithoutExtension(path) + "_out.lpsh";
                     WriteFile(lpsh, newPath);
                 }

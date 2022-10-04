@@ -209,37 +209,69 @@ namespace LpshTool
                 writer.Write(probeDataOffsets[i]);
             }
         }
-        public void FixGuantanamo(uint time, int probeIndex)
+        public void FixGuantanamo(uint time, int origIndex)
         {
             //uint time = 84240;//23:24:00
             //uint time = 70440;//19:34:00
-            if (Coefficients.Times.Contains(time))
-            {
-                Console.WriteLine("Time already exists!");
-                return;
-            }
+            time %= 86400;//24:00:00
             int newTimeIndex = Coefficients.Times.Count;
-            for (int i = 0; i < Coefficients.Times.Count; i++)
+            if (!Coefficients.Times.Contains(time))
             {
-                if (time<Coefficients.Times[i])
+                for (int i = 0; i < Coefficients.Times.Count; i++)
                 {
-                    newTimeIndex = i;
-                    break;
-                }
-            }
-            Coefficients.Times.Insert(newTimeIndex, time);
-            foreach (Probe probe in Coefficients.Probes)
-            {
-                if (probe.enable24hSH)
-                {
-                    CoefficientSet set = probe.Weather0[probeIndex];
-                    probe.Weather0.Insert(newTimeIndex,set);
-                    if (probe.enableWeatherSH)
+                    if (time < Coefficients.Times[i])
                     {
-                        set = probe.Weather1[probeIndex];
-                        probe.Weather1.Insert(newTimeIndex, set);
+                        newTimeIndex = i;
+                        break;
                     }
                 }
+                if (origIndex < 0)
+                {
+                    origIndex = newTimeIndex;
+                    if (newTimeIndex > Coefficients.Times.IndexOf(Coefficients.Times.First()) + 1 & newTimeIndex < Coefficients.Times.Count)
+                        if (Math.Abs(time - Coefficients.Times[newTimeIndex - 1]) < Math.Abs(Coefficients.Times[newTimeIndex] - time))
+                        {
+                            origIndex = newTimeIndex;
+                        }
+                    if (newTimeIndex == Coefficients.Times.Count)
+                        if (Math.Abs(Coefficients.Times[newTimeIndex - 1] - time) > Math.Abs(86400 - time))
+                        {
+                            origIndex = 0;
+                        }
+                }
+                Coefficients.Times.Insert(newTimeIndex, time);
+                foreach (Probe probe in Coefficients.Probes)
+                {
+                    if (probe.enable24hSH)
+                    {
+                        CoefficientSet set = probe.Weather0[origIndex];
+                        probe.Weather0.Insert(newTimeIndex, set);
+                        if (probe.enableWeatherSH)
+                        {
+                            set = probe.Weather1[origIndex];
+                            probe.Weather1.Insert(newTimeIndex, set);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Time already exists! Replacing...");
+                int newIndex = Coefficients.Times.IndexOf(time);
+                foreach (Probe probe in Coefficients.Probes)
+                {
+                    if (probe.enable24hSH)
+                    {
+                        CoefficientSet set = probe.Weather0[origIndex];
+                        probe.Weather0[newIndex] = set;
+                        if (probe.enableWeatherSH)
+                        {
+                            set = probe.Weather1[origIndex];
+                            probe.Weather1[newIndex] = set;
+                        }
+                    }
+                }
+                return;
             }
         }
     }

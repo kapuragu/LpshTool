@@ -25,6 +25,7 @@ namespace LpshTool
             var continuePos = reader.BaseStream.Position;
             reader.BaseStream.Position = NameStringOffset;
             Name = reader.ReadCString(); Console.WriteLine($"{Name}");
+            if (Name.Contains("LP_Duct_0009")) { Name = "LP_Duct_0009"; }
             reader.BaseStream.Position = continuePos;
 
             int DataOffset = reader.ReadInt32();
