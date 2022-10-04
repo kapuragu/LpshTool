@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,6 +35,21 @@ namespace LpshTool
             c22.Read(reader);
             c23.Read(reader);
             c24.Read(reader);
+        }
+
+        public void Write(BinaryWriter writer)
+        {
+            c00.Write(writer);
+
+            c10.Write(writer);
+            c11.Write(writer);
+            c12.Write(writer);
+
+            c20.Write(writer);
+            c21.Write(writer);
+            c22.Write(writer);
+            c23.Write(writer);
+            c24.Write(writer);
         }
     }
 }

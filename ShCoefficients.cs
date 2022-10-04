@@ -19,7 +19,15 @@ namespace LpshTool
             g = Half.ToHalf(reader.ReadUInt16());
             b = Half.ToHalf(reader.ReadUInt16());
             skyVisibility = Half.ToHalf(reader.ReadUInt16());
-            Console.WriteLine($"({r},{g},{b},{skyVisibility})");
+            //Console.WriteLine($"({r},{g},{b},{skyVisibility})");
+        }
+
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(Half.GetBytes(r));
+            writer.Write(Half.GetBytes(g));
+            writer.Write(Half.GetBytes(b));
+            writer.Write(Half.GetBytes(skyVisibility));
         }
     }
 }

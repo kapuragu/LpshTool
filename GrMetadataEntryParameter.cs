@@ -14,7 +14,7 @@ namespace LpshTool
     };
     public class GrMetadataEntryParameter
     {
-        ENTRY_PARAM_TYPE Type = new ENTRY_PARAM_TYPE();
+        public ENTRY_PARAM_TYPE Type = new ENTRY_PARAM_TYPE();
         public short NextParamOffset; //sizeof(GrMetadataEntryParameter)
         public MetadataString Name = new MetadataString();
         public uint ValueUint;

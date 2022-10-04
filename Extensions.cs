@@ -55,6 +55,7 @@ namespace LpshTool
             char[] stringChars = iString.ToCharArray();
             foreach (var chara in stringChars)
                 writer.Write(chara);
+            writer.Write((byte)0);
         }
         public static void AlignStream(this BinaryReader reader, byte div)
         {

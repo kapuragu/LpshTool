@@ -16,13 +16,14 @@ namespace LpshTool
     };
     public class GrHeader
     {
+        public GR_FILE_TYPE Type;
         public uint MetadataEntriesOffset;
         public uint FileSize;
         public MetadataString Name = new MetadataString();
         public void Read(BinaryReader reader)
         {
             Console.WriteLine($"@{reader.BaseStream.Position} GrHeader:");
-            GR_FILE_TYPE type = (GR_FILE_TYPE)reader.ReadUInt32(); Console.WriteLine($"type={type}");
+            Type = (GR_FILE_TYPE)reader.ReadUInt32(); Console.WriteLine($"type={Type}");
             MetadataEntriesOffset = reader.ReadUInt32(); Console.WriteLine($"MetadataEntriesOffset={MetadataEntriesOffset}");
             FileSize = reader.ReadUInt32(); Console.WriteLine($"FileSize={FileSize}");
             
