@@ -42,7 +42,7 @@ namespace LpshTool
         {
             var chars = new List<char>();
             var @char = Convert.ToChar(reader.ReadByte());
-            while (@char != '\0' & @char != '"')
+            while (@char != '\0')
             {
                 chars.Add(@char);
                 @char = Convert.ToChar(reader.ReadByte());

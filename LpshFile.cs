@@ -219,7 +219,7 @@ namespace LpshTool
             {
                 for (int i = 0; i < Coefficients.Times.Count; i++)
                 {
-                    if (time < Coefficients.Times[i])
+                    if (time <= Coefficients.Times[i])
                     {
                         newTimeIndex = i;
                         break;

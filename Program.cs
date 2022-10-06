@@ -18,15 +18,25 @@ namespace LpshTool
             {
                 Console.WriteLine(arg);
 
-                if (isClone)
+
+                if (File.Exists(arg))
                 {
-                    if (CloneTime<0)
+                    string path = arg;
+                    LpshFile lpsh = ReadFile(path);
+                    if (isClone& CloneTime>0)
+                        lpsh.FixGuantanamo((uint)CloneTime, CloneOrigIndex);
+                    string newPath = Path.GetFileNameWithoutExtension(path) + "_out.lpsh";
+                    WriteFile(lpsh, newPath);
+                }
+                else if (isClone)
+                {
+                    if (CloneTime < 0)
                     {
                         int.TryParse(arg, out CloneTime);
                         Console.WriteLine($"Clone time: {CloneTime}");
                         continue;
                     }
-                    else if (CloneOrigIndex<0)
+                    else if (CloneOrigIndex < 0)
                     {
                         int.TryParse(arg, out CloneOrigIndex);
                         Console.WriteLine($"Clone original index: {CloneOrigIndex}");
@@ -39,16 +49,6 @@ namespace LpshTool
                     isClone = true;
                     Console.WriteLine("Start clone");
                     continue;
-                }
-
-                if (File.Exists(arg))
-                {
-                    string path = arg;
-                    LpshFile lpsh = ReadFile(path);
-                    if (isClone& CloneTime>0)
-                        lpsh.FixGuantanamo((uint)CloneTime, CloneOrigIndex);
-                    string newPath = Path.GetFileNameWithoutExtension(path) + "_out.lpsh";
-                    WriteFile(lpsh, newPath);
                 }
             }
             Console.ReadLine();
